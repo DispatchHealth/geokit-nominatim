@@ -1,6 +1,6 @@
 class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
 
-  VERSION = "1.0.1"
+  VERSION = "1.0.2"
   PLACE_KEYS = %W{city state postcode country country_code house_number house
                   hamlet}
   PROVIDER = 'nominatim'
@@ -25,8 +25,18 @@ class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
     opts = options.merge(:q => address_str, :limit => 1,
                          :format => :xml, :addressdetails => 1)
     opts.delete(:server)
-    params = opts.collect { |k,v| "#{k}=#{URI.escape(v.to_s)}" }.join("&")
 
+    if options[:bias].present?
+      if options[:bias].is_a?(Geokit::Bounds)
+        sw = options[:bias].sw
+        ne = options[:bias].ne
+        opts[:viewbox]=[sw.lng, sw.lat, ne.lng, ne.lat].join(',') # <x1>,<y1>,<x2>,<y2>
+      else
+        opts[:countrycodes] = [options[:bias]].join(',')
+      end
+    end
+
+    params = opts.collect { |k,v| "#{k}=#{URI.escape(v.to_s)}" }.join("&")
     # send query
     url = "#{server}?#{params}"
     server_res = self.call_geocoder_service(url)
@@ -47,9 +57,14 @@ class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
 
     place = doc.elements['//searchresults/place']
 
+    if place.blank?
+      return
+    end
+
     attrs = place.attributes
     res.lat = attrs['lat']
     res.lng = attrs['lon']
+    set_bounds(attrs['boundingbox'], res)
 
     elements = {}
     PLACE_KEYS.each do |key|
@@ -65,11 +80,21 @@ class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
     res.street_number = elements['house_number'] || elements['house']
     res.success = true
 
-    res.boundingbox = elements['boundingbox']
   end
 
   def self.escape(string)
     Geokit::Inflector::url_escape(string.to_s)
+  end
+
+  def self.set_bounds(boundingbox, res)
+    points = boundingbox.split(',') # min latitude, max latitude, min longitude, max longitude
+
+    ne_json = {'lat' => points[1], 'lng' =>  points[3]}
+    sw_json = {'lat' => points[0], 'lng' =>  points[2]}
+
+    ne = Geokit::LatLng.from_json(ne_json)
+    sw = Geokit::LatLng.from_json(sw_json)
+    res.suggested_bounds = Geokit::Bounds.new(sw, ne)
   end
 
 end
