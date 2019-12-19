@@ -13,7 +13,8 @@ class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
     # get server address
     server = options[:server] || self.server
     raise "server required" unless server
-    server = "http://#{server}" unless server.match(/^http:/)
+
+    server = "http://#{server}" unless (server.match(/^http:/) || server.match(/^https:/))
 
     # construct response
     res = Geokit::GeoLoc.new
@@ -45,6 +46,7 @@ class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
     doc = REXML::Document.new(xml)
 
     place = doc.elements['//searchresults/place']
+
     attrs = place.attributes
     res.lat = attrs['lat']
     res.lng = attrs['lon']
@@ -62,6 +64,8 @@ class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
     res.state = elements['state']
     res.street_number = elements['house_number'] || elements['house']
     res.success = true
+
+    res.boundingbox = elements['boundingbox']
   end
 
   def self.escape(string)
