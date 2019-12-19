@@ -34,6 +34,8 @@ class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
       else
         opts[:countrycodes] = [options[:bias]].join(',')
       end
+
+      opts.delete(:bias)
     end
 
     params = opts.collect { |k,v| "#{k}=#{URI.escape(v.to_s)}" }.join("&")
