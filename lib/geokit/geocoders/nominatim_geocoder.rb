@@ -1,6 +1,6 @@
 class Geokit::Geocoders::NominatimGeocoder < Geokit::Geocoders::Geocoder
 
-  VERSION = "1.0.2"
+  VERSION = "1.0.3"
   PLACE_KEYS = %W{city state postcode country country_code house_number house
                   hamlet}
   PROVIDER = 'nominatim'
