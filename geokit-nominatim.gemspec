@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'geokit-nominatim'
+# require 'geokit-nominatim'
 
 Gem::Specification.new do |s|
   s.name        = "geokit-nominatim"
-  s.version     = Geokit::Geocoders::NominatimGeocoder::VERSION
+  s.version     = "1.0.3" # Geokit::Geocoders::NominatimGeocoder::VERSION
   s.authors     = ["Andrew Williams"]
   s.email       = ["sobakasu@gmail.com"]
   s.homepage    = "http://github.com/sobakasu/geokit-nominatim"
@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib", "app"]
 
   # Gem dependencies
-  s.add_development_dependency("json_pure")
-  s.add_development_dependency("geokit")
+  s.add_runtime_dependency("json_pure")
+  s.add_runtime_dependency("geokit")
 end
