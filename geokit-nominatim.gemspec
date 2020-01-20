@@ -1,10 +1,7 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("lib", __FILE__)
-require 'geokit-nominatim'
-
 Gem::Specification.new do |s|
   s.name        = "geokit-nominatim"
-  s.version     = Geokit::Geocoders::NominatimGeocoder::VERSION
+  s.version     = "1.0.3"
   s.authors     = ["Andrew Williams"]
   s.email       = ["sobakasu@gmail.com"]
   s.homepage    = "http://github.com/sobakasu/geokit-nominatim"
