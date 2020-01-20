@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib", "app"]
 
   # Gem dependencies
-  s.add_runtime_dependency("json_pure")
-  s.add_runtime_dependency("geokit")
+  s.add_development_dependency("json_pure")
+  s.add_development_dependency("geokit")
 end
