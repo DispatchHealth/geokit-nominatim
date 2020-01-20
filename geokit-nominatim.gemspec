@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |s|
   s.name        = "geokit-nominatim"
-  s.version     = "1.0.3" # Geokit::Geocoders::NominatimGeocoder::VERSION
+  s.version     = "1.0.3"
   s.authors     = ["Andrew Williams"]
   s.email       = ["sobakasu@gmail.com"]
   s.homepage    = "http://github.com/sobakasu/geokit-nominatim"
