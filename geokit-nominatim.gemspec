@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-
 require 'geokit-nominatim'
 
 Gem::Specification.new do |s|
@@ -22,5 +21,5 @@ Gem::Specification.new do |s|
 
   # Gem dependencies
   s.add_dependency("json_pure")
-  s.add_dependency("geokit",     "~> 1.6")
+  s.add_dependency("geokit")
 end
